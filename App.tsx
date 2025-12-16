@@ -45,7 +45,7 @@ interface ModalState {
 
 // Sorting State Interface
 export interface SortConfig {
-  key: 'status' | 'item' | 'id';
+  key: 'status' | 'item' | 'id' | 'length' | 'weight' | 'area' | 'qty';
   direction: 'asc' | 'desc';
 }
 
@@ -70,6 +70,7 @@ export default function App() {
     area: true,
     status: true,
     shop: true,
+    fp: true,
     qty: true,
     updated: true
   });
@@ -79,6 +80,8 @@ export default function App() {
   const [filterShop, setFilterShop] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [filterItemType, setFilterItemType] = useState('ALL');
+  const [filterDetail, setFilterDetail] = useState('ALL');
+  const [filterFP, setFilterFP] = useState('ALL');
   const [showShipped, setShowShipped] = useState(false);
   
   // Sorting state
@@ -151,6 +154,18 @@ export default function App() {
     return Array.from(types).sort();
   }, [items]);
 
+  // Compute unique Details (Material)
+  const uniqueDetails = useMemo(() => {
+    const details = new Set(items.map(i => i.material).filter(Boolean));
+    return Array.from(details).sort();
+  }, [items]);
+
+  // Compute unique FP values
+  const uniqueFPs = useMemo(() => {
+    const fps = new Set(items.map(i => i.fp).filter(Boolean));
+    return Array.from(fps).sort();
+  }, [items]);
+
   // Filter Logic
   const filteredItems = useMemo(() => {
     return items.filter(item => {
@@ -167,7 +182,13 @@ export default function App() {
       // 4. Item Type Filter (using ITEM column)
       if (filterItemType !== 'ALL' && item.item !== filterItemType) return false;
 
-      // 5. Search Term (ID, Item, Desc)
+      // 5. Detail Filter (Material)
+      if (filterDetail !== 'ALL' && item.material !== filterDetail) return false;
+
+      // 6. FP Filter
+      if (filterFP !== 'ALL' && item.fp !== filterFP) return false;
+
+      // 7. Search Term (ID, Item, Desc)
       if (searchTerm) {
         const lowerTerm = searchTerm.toLowerCase();
         return (
@@ -178,7 +199,7 @@ export default function App() {
       }
       return true;
     });
-  }, [items, searchTerm, filterShop, filterStatus, filterItemType, showShipped]);
+  }, [items, searchTerm, filterShop, filterStatus, filterItemType, filterDetail, filterFP, showShipped]);
 
   // Sorting Logic
   const sortedItems = useMemo(() => {
@@ -204,6 +225,18 @@ export default function App() {
         case 'id':
            comparison = a.id.localeCompare(b.id);
            break;
+        case 'length':
+          comparison = a.length - b.length;
+          break;
+        case 'weight':
+          comparison = a.weight - b.weight;
+          break;
+        case 'area':
+          comparison = a.area - b.area;
+          break;
+        case 'qty':
+          comparison = a.qty - b.qty;
+          break;
         default:
           comparison = 0;
       }
@@ -680,11 +713,21 @@ export default function App() {
         activeFilterItem={filterItemType}
         itemOptions={uniqueItemTypes}
 
+        onFilterDetail={setFilterDetail}
+        activeFilterDetail={filterDetail}
+        detailOptions={uniqueDetails}
+
+        onFilterFP={setFilterFP}
+        activeFilterFP={filterFP}
+        fpOptions={uniqueFPs}
+
         onReset={() => {
           setSearchTerm('');
           setFilterShop('ALL');
           setFilterStatus('ALL');
           setFilterItemType('ALL');
+          setFilterDetail('ALL');
+          setFilterFP('ALL');
         }}
         onImportClick={handleImportClick}
         onExportClick={handleExport}

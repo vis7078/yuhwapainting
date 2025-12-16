@@ -11,6 +11,7 @@ interface ColumnVisibility {
   area: boolean;
   status: boolean;
   shop: boolean;
+  fp: boolean;
   qty: boolean;
   updated: boolean;
 }
@@ -26,6 +27,14 @@ interface RibbonFilterProps {
   onFilterItem: (itemType: string) => void;
   activeFilterItem: string;
   itemOptions: string[];
+
+  onFilterDetail: (detail: string) => void;
+  activeFilterDetail: string;
+  detailOptions: string[];
+
+  onFilterFP: (fp: string) => void;
+  activeFilterFP: string;
+  fpOptions: string[];
 
   onReset: () => void;
   onImportClick: () => void;
@@ -49,6 +58,12 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
   onFilterItem,
   activeFilterItem,
   itemOptions,
+  onFilterDetail,
+  activeFilterDetail,
+  detailOptions,
+  onFilterFP,
+  activeFilterFP,
+  fpOptions,
   onReset,
   onImportClick,
   onExportClick,
@@ -145,6 +160,36 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
           >
             <option value="ALL">품목</option>
             {itemOptions.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Detail Filter (Material) */}
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
+          <select 
+            className="text-xs sm:text-sm border-slate-300 rounded-md shadow-sm focus:border-brand-300 focus:ring focus:ring-brand-200 focus:ring-opacity-50 py-1 sm:py-1.5 bg-white text-slate-700 pr-6 sm:pr-8"
+            value={activeFilterDetail}
+            onChange={(e) => onFilterDetail(e.target.value)}
+          >
+            <option value="ALL">재질</option>
+            {detailOptions.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* FP Filter */}
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
+          <select 
+            className="text-xs sm:text-sm border-slate-300 rounded-md shadow-sm focus:border-brand-300 focus:ring focus:ring-brand-200 focus:ring-opacity-50 py-1 sm:py-1.5 bg-white text-slate-700 pr-6 sm:pr-8"
+            value={activeFilterFP}
+            onChange={(e) => onFilterFP(e.target.value)}
+          >
+            <option value="ALL">FP</option>
+            {fpOptions.map(opt => (
               <option key={opt} value={opt}>{opt}</option>
             ))}
           </select>
@@ -314,6 +359,16 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
               className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
             />
             <span className="text-xs sm:text-sm font-medium whitespace-nowrap">Q'TY</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.fp}
+              onChange={() => toggleColumn('fp')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">FP</span>
           </label>
           
           <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">

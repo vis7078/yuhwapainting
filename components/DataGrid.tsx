@@ -13,6 +13,7 @@ interface ColumnVisibility {
   area: boolean;
   status: boolean;
   shop: boolean;
+  fp: boolean;
   qty: boolean;
   updated: boolean;
 }
@@ -48,11 +49,11 @@ export const DataGrid: React.FC<DataGridProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-auto custom-scrollbar bg-white shadow-sm border border-slate-200 rounded-lg mx-2 sm:mx-4 lg:mx-6 mb-20 sm:mb-24">
-      <table className="min-w-full divide-y divide-slate-200">
+    <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar bg-white shadow-sm border border-slate-200 rounded-lg mx-2 sm:mx-4 lg:mx-6 mb-20 sm:mb-24">
+      <table className="min-w-full divide-y divide-slate-200 relative">
         <thead className="bg-slate-50 sticky top-0 z-10">
           <tr>
-            <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-8 sm:w-12">
+            <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider w-8 sm:w-12 sticky left-0 bg-slate-50 z-20">
               <input
                 type="checkbox"
                 className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-3.5 h-3.5 sm:w-4 sm:h-4"
@@ -60,17 +61,11 @@ export const DataGrid: React.FC<DataGridProps> = ({
                 onChange={onToggleSelectAll}
               />
             </th>
-
-            {visibleColumns.no && (
-              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                NO.
-              </th>
-            )}
             
             {visibleColumns.itemDesc && (
               <th 
                 scope="col" 
-                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
+                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none sticky left-[40px] bg-slate-50 z-20 shadow-sm"
                 onClick={() => onSort('item')}
               >
                 <div className="flex items-center gap-1">
@@ -80,12 +75,36 @@ export const DataGrid: React.FC<DataGridProps> = ({
               </th>
             )}
 
+            {visibleColumns.no && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                NO.
+              </th>
+            )}
+
             {visibleColumns.length && (
-              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">LENGTH</th>
+              <th 
+                scope="col" 
+                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
+                onClick={() => onSort('length')}
+              >
+                <div className="flex items-center gap-1">
+                  LENGTH
+                  <SortIcon columnKey="length" />
+                </div>
+              </th>
             )}
 
             {visibleColumns.weight && (
-              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">WEIGHT</th>
+              <th 
+                scope="col" 
+                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
+                onClick={() => onSort('weight')}
+              >
+                <div className="flex items-center gap-1">
+                  WEIGHT
+                  <SortIcon columnKey="weight" />
+                </div>
+              </th>
             )}
 
             {visibleColumns.detail && (
@@ -93,7 +112,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
             )}
 
             {visibleColumns.area && (
-              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">AREA</th>
+              <th 
+                scope="col" 
+                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
+                onClick={() => onSort('area')}
+              >
+                <div className="flex items-center gap-1">
+                  AREA
+                  <SortIcon columnKey="area" />
+                </div>
+              </th>
             )}
             
             {visibleColumns.status && (
@@ -113,8 +141,21 @@ export const DataGrid: React.FC<DataGridProps> = ({
               <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">SHOP</th>
             )}
 
+            {visibleColumns.fp && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">FP</th>
+            )}
+
             {visibleColumns.qty && (
-              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Q'TY</th>
+              <th 
+                scope="col" 
+                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
+                onClick={() => onSort('qty')}
+              >
+                <div className="flex items-center gap-1">
+                  Q'TY
+                  <SortIcon columnKey="qty" />
+                </div>
+              </th>
             )}
             
             {visibleColumns.updated && (
@@ -136,7 +177,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
                 className={`hover:bg-slate-50 transition-colors cursor-pointer ${selectedIds.has(item.id) ? 'bg-yellow-100' : ''}`}
                 onClick={() => onToggleSelect(item.id)}
               >
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap">
+                <td className={`px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap sticky left-0 z-10 ${selectedIds.has(item.id) ? 'bg-yellow-100' : 'bg-white'}`}>
                   <input
                     type="checkbox"
                     className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-3.5 h-3.5 sm:w-4 sm:h-4"
@@ -148,16 +189,16 @@ export const DataGrid: React.FC<DataGridProps> = ({
                   />
                 </td>
                 
+                {visibleColumns.itemDesc && (
+                  <td className={`px-2 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-900 sticky left-[40px] z-10 shadow-sm ${selectedIds.has(item.id) ? 'bg-yellow-100' : 'bg-white'}`}>
+                    <div className="font-bold text-base">{item.description}</div>
+                    <div className="text-xs text-slate-500">{item.item}</div>
+                  </td>
+                )}
+
                 {visibleColumns.no && (
                   <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-bold text-slate-700">
                     {item.id}
-                  </td>
-                )}
-                
-                {visibleColumns.itemDesc && (
-                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-900">
-                    <div className="font-bold text-base">{item.description}</div>
-                    <div className="text-xs text-slate-500">{item.item}</div>
                   </td>
                 )}
                 
@@ -175,7 +216,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
 
                 {visibleColumns.detail && (
                   <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
-                    {item.material} | {item.fp}
+                    {item.material}
                   </td>
                 )}
 
@@ -197,6 +238,12 @@ export const DataGrid: React.FC<DataGridProps> = ({
                 {visibleColumns.shop && (
                   <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
                     {item.shop}
+                  </td>
+                )}
+
+                {visibleColumns.fp && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
+                    {item.fp}
                   </td>
                 )}
 
