@@ -707,7 +707,7 @@ export default function App() {
       <main className="flex-1 flex flex-col overflow-hidden p-2 sm:p-4 lg:p-6 max-w-[1600px] mx-auto w-full">
         {/* View Toggle (Active vs Shipped) */}
         <div className="flex justify-between items-center mb-3 sm:mb-4 px-1">
-          <DashboardStatsView stats={stats} />
+          <DashboardStatsView stats={stats} items={filteredItems} />
           <div className="flex bg-slate-200 p-0.5 sm:p-1 rounded-lg">
             <button
               onClick={() => setShowShipped(false)}
@@ -749,8 +749,21 @@ export default function App() {
 }
 
 // Small helper component to show stats text when Dashboard is hidden in Shipped view
-const DashboardStatsView = ({ stats }: { stats: any }) => (
-  <div className="text-xs sm:text-sm text-slate-500">
-    전체: <span className="font-semibold text-slate-900">{stats.total}</span>
-  </div>
-);
+const DashboardStatsView = ({ stats, items }: { stats: any; items: ProductItem[] }) => {
+  const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
+  const totalArea = items.reduce((sum, item) => sum + item.area, 0);
+  
+  return (
+    <div className="text-xs sm:text-sm text-slate-500 flex items-center gap-3 flex-wrap">
+      <span>
+        수량: <span className="font-semibold text-slate-900">{stats.total}</span>
+      </span>
+      <span>
+        W: <span className="font-semibold text-slate-900">{totalWeight.toFixed(1)}</span>kg
+      </span>
+      <span>
+        A: <span className="font-semibold text-slate-900">{totalArea.toFixed(1)}</span>m²
+      </span>
+    </div>
+  );
+};
