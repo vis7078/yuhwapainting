@@ -7,9 +7,13 @@ import { SortConfig } from '../App';
 interface ColumnVisibility {
   no: boolean;
   itemDesc: boolean;
-  techSpecs: boolean;
+  length: boolean;
+  weight: boolean;
+  detail: boolean;
+  area: boolean;
   status: boolean;
   shop: boolean;
+  qty: boolean;
   updated: boolean;
 }
 
@@ -76,10 +80,20 @@ export const DataGrid: React.FC<DataGridProps> = ({
               </th>
             )}
 
-            {visibleColumns.techSpecs && (
-              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-                TECH SPECS
-              </th>
+            {visibleColumns.length && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">LENGTH</th>
+            )}
+
+            {visibleColumns.weight && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">WEIGHT</th>
+            )}
+
+            {visibleColumns.detail && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">DETAIL</th>
+            )}
+
+            {visibleColumns.area && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">AREA</th>
             )}
             
             {visibleColumns.status && (
@@ -97,6 +111,10 @@ export const DataGrid: React.FC<DataGridProps> = ({
 
             {visibleColumns.shop && (
               <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">SHOP</th>
+            )}
+
+            {visibleColumns.qty && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Q'TY</th>
             )}
             
             {visibleColumns.updated && (
@@ -143,17 +161,27 @@ export const DataGrid: React.FC<DataGridProps> = ({
                   </td>
                 )}
                 
-                {visibleColumns.techSpecs && (
-                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs text-slate-500 font-mono">
-                    <div className="grid grid-cols-2 gap-x-2 lg:gap-x-4 gap-y-1">
-                      <span className="col-span-2 text-slate-800 font-semibold border-b border-slate-100 pb-1 mb-1">
-                        {item.material} <span className="text-slate-400 mx-1">|</span> {item.fp}
-                      </span>
-                      <span title="Length" className="truncate">L: {item.length}</span>
-                      <span title="Quantity" className="text-slate-700 font-bold truncate">Q: {item.qty}</span>
-                      <span title="Weight" className="truncate">W: {item.weight}</span>
-                      <span title="Surface Area" className="truncate">A: {item.area}</span>
-                    </div>
+                {visibleColumns.length && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
+                    {item.length}
+                  </td>
+                )}
+
+                {visibleColumns.weight && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
+                    {item.weight}
+                  </td>
+                )}
+
+                {visibleColumns.detail && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
+                    {item.material} | {item.fp}
+                  </td>
+                )}
+
+                {visibleColumns.area && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
+                    {item.area}
                   </td>
                 )}
                 
@@ -169,6 +197,12 @@ export const DataGrid: React.FC<DataGridProps> = ({
                 {visibleColumns.shop && (
                   <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
                     {item.shop}
+                  </td>
+                )}
+
+                {visibleColumns.qty && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-bold text-slate-700">
+                    {item.qty}
                   </td>
                 )}
                 

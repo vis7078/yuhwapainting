@@ -64,9 +64,13 @@ export default function App() {
   const [visibleColumns, setVisibleColumns] = useState({
     no: true,
     itemDesc: true,
-    techSpecs: true,
+    length: true,
+    weight: true,
+    detail: true,
+    area: true,
     status: true,
     shop: true,
+    qty: true,
     updated: true
   });
   

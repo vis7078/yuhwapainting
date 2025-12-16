@@ -5,9 +5,13 @@ import { ShopLocation, WorkflowStatus } from '../types';
 interface ColumnVisibility {
   no: boolean;
   itemDesc: boolean;
-  techSpecs: boolean;
+  length: boolean;
+  weight: boolean;
+  detail: boolean;
+  area: boolean;
   status: boolean;
   shop: boolean;
+  qty: boolean;
   updated: boolean;
 }
 
@@ -245,11 +249,41 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
           <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
             <input
               type="checkbox"
-              checked={visibleColumns.techSpecs}
-              onChange={() => toggleColumn('techSpecs')}
+              checked={visibleColumns.length}
+              onChange={() => toggleColumn('length')}
               className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
             />
-            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">TECH SPECS</span>
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">LENGTH</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.weight}
+              onChange={() => toggleColumn('weight')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">WEIGHT</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.detail}
+              onChange={() => toggleColumn('detail')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">DETAIL</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.area}
+              onChange={() => toggleColumn('area')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">AREA</span>
           </label>
           
           <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
@@ -270,6 +304,16 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
               className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
             />
             <span className="text-xs sm:text-sm font-medium whitespace-nowrap">SHOP</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.qty}
+              onChange={() => toggleColumn('qty')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">Q'TY</span>
           </label>
           
           <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
