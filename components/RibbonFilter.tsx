@@ -102,75 +102,18 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
       <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-3 px-3 sm:mx-0 sm:px-0">
         
         {/* Column Menu Filter */}
-        <div className="flex items-center gap-1 flex-shrink-0 relative">
+        <div className="flex items-center gap-1 flex-shrink-0">
           <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
           <button
             onClick={() => setShowColumnMenu(!showColumnMenu)}
-            className="text-xs sm:text-sm border border-slate-300 rounded-md shadow-sm py-1 sm:py-1.5 px-2 sm:px-3 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
+            className={`text-xs sm:text-sm border rounded-md shadow-sm py-1 sm:py-1.5 px-2 sm:px-3 transition-colors ${
+              showColumnMenu 
+                ? 'bg-brand-100 border-brand-300 text-brand-700' 
+                : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
+            }`}
           >
             메뉴
           </button>
-          
-          {showColumnMenu && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-slate-200 rounded-md shadow-lg z-50 min-w-[160px]">
-              <div className="p-2 space-y-1">
-                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={visibleColumns.no}
-                    onChange={() => toggleColumn('no')}
-                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-                  />
-                  <span className="text-sm">NO.</span>
-                </label>
-                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={visibleColumns.itemDesc}
-                    onChange={() => toggleColumn('itemDesc')}
-                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-                  />
-                  <span className="text-sm">ITEM / DESC</span>
-                </label>
-                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={visibleColumns.techSpecs}
-                    onChange={() => toggleColumn('techSpecs')}
-                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-                  />
-                  <span className="text-sm">TECH SPECS</span>
-                </label>
-                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={visibleColumns.status}
-                    onChange={() => toggleColumn('status')}
-                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-                  />
-                  <span className="text-sm">STATUS</span>
-                </label>
-                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={visibleColumns.shop}
-                    onChange={() => toggleColumn('shop')}
-                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-                  />
-                  <span className="text-sm">SHOP</span>
-                </label>
-                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={visibleColumns.updated}
-                    onChange={() => toggleColumn('updated')}
-                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
-                  />
-                  <span className="text-sm">UPDATED</span>
-                </label>
-              </div>
-            </div>
-          )}
         </div>
         
         {/* Status Filter */}
@@ -275,6 +218,71 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Column Menu Checkboxes - Horizontal Layout */}
+      {showColumnMenu && (
+        <div className="flex items-center gap-3 px-3 py-2 bg-slate-50 border-t border-slate-200 overflow-x-auto">
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.no}
+              onChange={() => toggleColumn('no')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">NO.</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.itemDesc}
+              onChange={() => toggleColumn('itemDesc')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">ITEM / DESC</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.techSpecs}
+              onChange={() => toggleColumn('techSpecs')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">TECH SPECS</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.status}
+              onChange={() => toggleColumn('status')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">STATUS</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.shop}
+              onChange={() => toggleColumn('shop')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">SHOP</span>
+          </label>
+          
+          <label className="flex items-center gap-1.5 flex-shrink-0 cursor-pointer hover:text-brand-700 transition-colors">
+            <input
+              type="checkbox"
+              checked={visibleColumns.updated}
+              onChange={() => toggleColumn('updated')}
+              className="rounded border-slate-300 text-brand-600 focus:ring-brand-500 w-4 h-4"
+            />
+            <span className="text-xs sm:text-sm font-medium whitespace-nowrap">UPDATED</span>
+          </label>
+        </div>
+      )}
     </div>
   );
 };
