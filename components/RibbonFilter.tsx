@@ -1,6 +1,15 @@
-import React from 'react';
-import { Search, Filter, RefreshCw, Upload, Download, ListFilter, Layers, Save, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Filter, RefreshCw, Upload, Download, ListFilter, Layers, Save, Loader2, Menu, X } from 'lucide-react';
 import { ShopLocation, WorkflowStatus } from '../types';
+
+interface ColumnVisibility {
+  no: boolean;
+  itemDesc: boolean;
+  techSpecs: boolean;
+  status: boolean;
+  shop: boolean;
+  updated: boolean;
+}
 
 interface RibbonFilterProps {
   onSearch: (term: string) => void;
@@ -22,6 +31,9 @@ interface RibbonFilterProps {
   hasUnsavedChanges: boolean;
   isSaving: boolean;
   isAdmin: boolean;
+  
+  visibleColumns: ColumnVisibility;
+  onColumnVisibilityChange: (columns: ColumnVisibility) => void;
 }
 
 export const RibbonFilter: React.FC<RibbonFilterProps> = ({
@@ -39,8 +51,18 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
   onSave,
   hasUnsavedChanges,
   isSaving,
-  isAdmin
+  isAdmin,
+  visibleColumns,
+  onColumnVisibilityChange
 }) => {
+  const [showColumnMenu, setShowColumnMenu] = useState(false);
+  
+  const toggleColumn = (column: keyof ColumnVisibility) => {
+    onColumnVisibilityChange({
+      ...visibleColumns,
+      [column]: !visibleColumns[column]
+    });
+  };
   return (
     <div className="bg-white border-b border-slate-200 px-3 sm:px-6 py-3 flex flex-col gap-3 shadow-sm z-10">
       
@@ -78,6 +100,78 @@ export const RibbonFilter: React.FC<RibbonFilterProps> = ({
 
       {/* Bottom Row: Filters & Actions */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 -mx-3 px-3 sm:mx-0 sm:px-0">
+        
+        {/* Column Menu Filter */}
+        <div className="flex items-center gap-1 flex-shrink-0 relative">
+          <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500" />
+          <button
+            onClick={() => setShowColumnMenu(!showColumnMenu)}
+            className="text-xs sm:text-sm border border-slate-300 rounded-md shadow-sm py-1 sm:py-1.5 px-2 sm:px-3 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            메뉴
+          </button>
+          
+          {showColumnMenu && (
+            <div className="absolute top-full left-0 mt-1 bg-white border border-slate-200 rounded-md shadow-lg z-50 min-w-[160px]">
+              <div className="p-2 space-y-1">
+                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={visibleColumns.no}
+                    onChange={() => toggleColumn('no')}
+                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span className="text-sm">NO.</span>
+                </label>
+                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={visibleColumns.itemDesc}
+                    onChange={() => toggleColumn('itemDesc')}
+                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span className="text-sm">ITEM / DESC</span>
+                </label>
+                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={visibleColumns.techSpecs}
+                    onChange={() => toggleColumn('techSpecs')}
+                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span className="text-sm">TECH SPECS</span>
+                </label>
+                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={visibleColumns.status}
+                    onChange={() => toggleColumn('status')}
+                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span className="text-sm">STATUS</span>
+                </label>
+                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={visibleColumns.shop}
+                    onChange={() => toggleColumn('shop')}
+                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span className="text-sm">SHOP</span>
+                </label>
+                <label className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 rounded cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={visibleColumns.updated}
+                    onChange={() => toggleColumn('updated')}
+                    className="rounded border-slate-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span className="text-sm">UPDATED</span>
+                </label>
+              </div>
+            </div>
+          )}
+        </div>
         
         {/* Status Filter */}
         <div className="flex items-center gap-1 flex-shrink-0">

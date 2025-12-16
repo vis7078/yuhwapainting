@@ -4,6 +4,15 @@ import { STATUS_COLORS, STATUS_ICONS } from '../constants';
 import { ArrowUp, ArrowDown, ArrowUpDown } from 'lucide-react';
 import { SortConfig } from '../App';
 
+interface ColumnVisibility {
+  no: boolean;
+  itemDesc: boolean;
+  techSpecs: boolean;
+  status: boolean;
+  shop: boolean;
+  updated: boolean;
+}
+
 interface DataGridProps {
   items: ProductItem[];
   selectedIds: Set<string>;
@@ -11,6 +20,7 @@ interface DataGridProps {
   onToggleSelectAll: () => void;
   sortConfig: SortConfig | null;
   onSort: (key: SortConfig['key']) => void;
+  visibleColumns: ColumnVisibility;
 }
 
 export const DataGrid: React.FC<DataGridProps> = ({ 
@@ -19,7 +29,8 @@ export const DataGrid: React.FC<DataGridProps> = ({
   onToggleSelect, 
   onToggleSelectAll,
   sortConfig,
-  onSort
+  onSort,
+  visibleColumns
 }) => {
   const allSelected = items.length > 0 && selectedIds.size === items.length;
 
@@ -45,43 +56,52 @@ export const DataGrid: React.FC<DataGridProps> = ({
                 onChange={onToggleSelectAll}
               />
             </th>
-            
-            <th 
-              scope="col" 
-              className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
-              onClick={() => onSort('status')}
-            >
-              <div className="flex items-center gap-1">
-                <span className="hidden sm:inline">Status</span>
-                <span className="sm:hidden">상태</span>
-                <SortIcon columnKey="status" />
-              </div>
-            </th>
 
-            <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-              <span className="hidden sm:inline">NO. (ID)</span>
-              <span className="sm:hidden">NO.</span>
-            </th>
+            {visibleColumns.no && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                NO.
+              </th>
+            )}
             
-            <th 
-              scope="col" 
-              className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
-              onClick={() => onSort('item')}
-            >
-              <div className="flex items-center gap-1">
-                <span className="hidden sm:inline">Item / Desc</span>
-                <span className="sm:hidden">품목</span>
-                <SortIcon columnKey="item" />
-              </div>
-            </th>
+            {visibleColumns.itemDesc && (
+              <th 
+                scope="col" 
+                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
+                onClick={() => onSort('item')}
+              >
+                <div className="flex items-center gap-1">
+                  ITEM / DESC
+                  <SortIcon columnKey="item" />
+                </div>
+              </th>
+            )}
 
-            <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider hidden lg:table-cell">Assembly</th>
-            <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider hidden md:table-cell">
-              <span className="hidden lg:inline">Tech Specs</span>
-              <span className="lg:hidden">Specs</span>
-            </th>
-            <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider hidden sm:table-cell">Shop</th>
-            <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider hidden xl:table-cell">Updated</th>
+            {visibleColumns.techSpecs && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                TECH SPECS
+              </th>
+            )}
+            
+            {visibleColumns.status && (
+              <th 
+                scope="col" 
+                className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider cursor-pointer group hover:bg-slate-100 transition-colors select-none"
+                onClick={() => onSort('status')}
+              >
+                <div className="flex items-center gap-1">
+                  STATUS
+                  <SortIcon columnKey="status" />
+                </div>
+              </th>
+            )}
+
+            {visibleColumns.shop && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">SHOP</th>
+            )}
+            
+            {visibleColumns.updated && (
+              <th scope="col" className="px-2 sm:px-4 lg:px-6 py-2 sm:py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">UPDATED</th>
+            )}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-slate-200">
@@ -95,7 +115,7 @@ export const DataGrid: React.FC<DataGridProps> = ({
             items.map((item) => (
               <tr 
                 key={item.id} 
-                className={`hover:bg-slate-50 transition-colors ${selectedIds.has(item.id) ? 'bg-blue-50/50' : ''}`}
+                className={`hover:bg-slate-50 transition-colors cursor-pointer ${selectedIds.has(item.id) ? 'bg-yellow-100' : ''}`}
                 onClick={() => onToggleSelect(item.id)}
               >
                 <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap">
@@ -109,39 +129,54 @@ export const DataGrid: React.FC<DataGridProps> = ({
                     }}
                   />
                 </td>
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap">
-                  <span className={`inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium border ${STATUS_COLORS[item.status]}`}>
-                    <span className="mr-1 sm:mr-1.5">{STATUS_ICONS[item.status]}</span>
-                    <span className="hidden sm:inline">{item.status}</span>
-                  </span>
-                </td>
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-bold text-slate-700">
-                  {item.id}
-                </td>
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-900">
-                  <div className="font-semibold">{item.item}</div>
-                  <div className="text-xs text-slate-500 hidden sm:block">{item.description}</div>
-                </td>
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600 hidden lg:table-cell">
-                   {item.assembly}
-                </td>
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs text-slate-500 font-mono hidden md:table-cell">
-                  <div className="grid grid-cols-2 gap-x-2 lg:gap-x-4 gap-y-1">
-                    <span className="col-span-2 text-slate-800 font-semibold border-b border-slate-100 pb-1 mb-1">
-                      {item.material} <span className="text-slate-400 mx-1">|</span> {item.fp}
+                
+                {visibleColumns.no && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-bold text-slate-700">
+                    {item.id}
+                  </td>
+                )}
+                
+                {visibleColumns.itemDesc && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs sm:text-sm text-slate-900">
+                    <div className="font-bold text-base">{item.description}</div>
+                    <div className="text-xs text-slate-500">{item.item}</div>
+                  </td>
+                )}
+                
+                {visibleColumns.techSpecs && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs text-slate-500 font-mono">
+                    <div className="grid grid-cols-2 gap-x-2 lg:gap-x-4 gap-y-1">
+                      <span className="col-span-2 text-slate-800 font-semibold border-b border-slate-100 pb-1 mb-1">
+                        {item.material} <span className="text-slate-400 mx-1">|</span> {item.fp}
+                      </span>
+                      <span title="Length" className="truncate">L: {item.length}</span>
+                      <span title="Quantity" className="text-slate-700 font-bold truncate">Q: {item.qty}</span>
+                      <span title="Weight" className="truncate">W: {item.weight}</span>
+                      <span title="Surface Area" className="truncate">A: {item.area}</span>
+                    </div>
+                  </td>
+                )}
+                
+                {visibleColumns.status && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap">
+                    <span className={`inline-flex items-center px-1.5 sm:px-2.5 py-0.5 rounded-full text-xs font-medium border ${STATUS_COLORS[item.status]}`}>
+                      <span className="mr-1 sm:mr-1.5">{STATUS_ICONS[item.status]}</span>
+                      {item.status}
                     </span>
-                    <span title="Length" className="truncate">L: {item.length}</span>
-                    <span title="Quantity" className="text-slate-700 font-bold truncate">Q: {item.qty}</span>
-                    <span title="Weight" className="truncate">W: {item.weight}</span>
-                    <span title="Surface Area" className="truncate">A: {item.area}</span>
-                  </div>
-                </td>
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600 hidden sm:table-cell">
-                  {item.shop}
-                </td>
-                <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-400 hidden xl:table-cell">
-                  {new Date(item.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                </td>
+                  </td>
+                )}
+                
+                {visibleColumns.shop && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-600">
+                    {item.shop}
+                  </td>
+                )}
+                
+                {visibleColumns.updated && (
+                  <td className="px-2 sm:px-4 lg:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-slate-400">
+                    {new Date(item.updatedAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                  </td>
+                )}
               </tr>
             ))
           )}
