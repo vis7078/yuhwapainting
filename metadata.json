@@ -1,0 +1,5 @@
+{
+  "name": "ChromaFlow Workflow Manager",
+  "description": "A comprehensive painting process workflow system managing industrial product lifecycles from CSV import to shipment.",
+  "requestFramePermissions": []
+}

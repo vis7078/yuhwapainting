@@ -1,0 +1,12 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow authenticated users to read and write products
+    match /products/{productId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == "aiRIAdVAKpO43zmynBX0T5C5PA02";
+    }
+  }
+}
+
+
